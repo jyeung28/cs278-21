@@ -1,0 +1,12 @@
+{
+  "name": "bubble-net",
+  "displayName": "bubble-net",
+  "expo": {
+    "name": "bubble-net",
+    "slug": "bubble-net",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
