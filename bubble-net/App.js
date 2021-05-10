@@ -10,6 +10,7 @@ import { useFonts } from 'expo-font';
 import Home from "./src/screens/Home.js";
 import LogIn from "./src/screens/LogIn.js"
 import SignUp from './src/screens/SignUp.js'
+import BubbleMap from './src/screens/BubbleMap.js'
 
 const Stack = createStackNavigator();
 
@@ -27,6 +28,7 @@ export default function App() {
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+        <Stack.Screen name="BubbleMap" component={BubbleMap} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
 

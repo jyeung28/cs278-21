@@ -76,7 +76,7 @@ class SignUp extends React.Component {
             onChangeText={text => this.setState({ password2: text })} />
         </View>
 
-        <TouchableOpacity style={styles.nextBtn} /*onPress={() => {signUpUser(this.state.email, this.state.password1, this.state.password2, this.props)}}*/>
+        <TouchableOpacity style={styles.nextBtn} onPress={() => {this.props.navigation.navigate('BubbleMap')}}>
           <Text style={styles.btnText}>NEXT</Text>
         </TouchableOpacity>
 
