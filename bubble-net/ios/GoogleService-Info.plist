@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>748132683004-v292qjln9kefloist5r5t03glvg7eogs.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.748132683004-v292qjln9kefloist5r5t03glvg7eogs</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDaV69Peq8k073KunC19NEc8kS5AlOU5LE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>748132683004</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.bubblenet.prototype</string>
+	<key>PROJECT_ID</key>
+	<string>bubble-net-4fbb4</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bubble-net-4fbb4.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:748132683004:ios:2e2bbac84d694c5bdb5b79</string>
+</dict>
+</plist>
