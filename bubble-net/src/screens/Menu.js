@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { SearchBar } from 'react-native-elements';
-import sidebar from '../assets/sidebar-icon.png'
 import { useNavigation } from '@react-navigation/native';
+import x from '../assets/x.png'
 
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -12,53 +12,34 @@ import "firebase/firestore";
 
 // import auth from '@react-native-firebase/auth';
 // import database from '@react-native-firebase/database';
-function changeStatus(online) {
-  if (online == false) {
-    setOnline(true);
-    console.log("Set online");
-  } else {
-    setOnline(false);
-    console.log("Went offline");
-  }
-}
 
-function BubbleMap() {
-  useEffect(() => {
-    // Assuming user is logged in
-    const userId = firebase.auth().currentUser.uid;
-    console.log("Presence detected for " + userId);
-    const reference = firebase.database().ref(`/online/${userId}`);
-
-    // Set the /users/:userId value to true
-    reference.set(true).then(() => console.log('Online presence set'));
-    
-    reference
-      .onDisconnect()
-      .remove()
-      .then(() => console.log('On disconnect function configured.'));
-
-  }, []);
-
+function Menu() {
   const navigation = useNavigation();
 
-  const [online, setOnline] = useState(false);
-
   return (
-    <View style={styles.container}>
+  <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={online === false ? styles.statusButtonOff : styles.statusButtonOn}>
-          <Text style={styles.statusText}>Tap to Wake Up!</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuContainer} onPress={() => {navigation.navigate('Menu')}}>
-          <Image style = {styles.menu} source={sidebar}/>
+        <View style={styles.statusButton}>
+          <Text style={styles.statusText}>Menu</Text>
+        </View>
+        <TouchableOpacity style={styles.menuContainer} onPress={() => {navigation.navigate('BubbleMap')}}>
+          <Image style = {styles.menu} source={x}/>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Contacts</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('LogIn')}}>
+        <Text style={styles.buttonText}>Log out</Text>
+      </TouchableOpacity>
 
     </View>
   ); 
 };
 
-export default withNavigation(BubbleMap);
+export default withNavigation(Menu);
 
 const styles = StyleSheet.create({
   container: {
@@ -98,19 +79,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 20,
   },
-  statusButtonOff: {
+  statusButton: {
     width: "65%",
-    backgroundColor: "#F07F7F",
-    borderRadius: 5,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10,
-    marginTop: 50,
-  },
-  statusButtonOn: {
-    width: "65%",
-    backgroundColor: "#88E5B3",
+    backgroundColor: "#F8B970",
     borderRadius: 5,
     height: 40,
     alignItems: "center",
@@ -121,6 +92,25 @@ const styles = StyleSheet.create({
   statusText: {
     fontFamily: "gotham_rounded_medium",
     color: "#1c2e4a",
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+    position: "relative",
+    fontSize: 30
+  },
+  button: {
+    width: "65%",
+    backgroundColor: "#88E5B3",
+    borderRadius: 5,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+    marginTop: 80,
+  },
+  buttonText: {
+    fontFamily: "gotham_rounded_medium",
+    color: "#1c2e4a",
+    fontWeight: "bold",
+    position: "relative",
+    fontSize: 20
+  },
 });

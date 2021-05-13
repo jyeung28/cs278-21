@@ -1,4 +1,4 @@
-import React from "react";
+import React, {} from "react";
 // import Button from "react-native-button";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
@@ -11,7 +11,6 @@ import firebase from "firebase/app";
 //import "firebase/analytics";
 
 // // Add the Firebase products that you want to use
-import "firebase/auth";
 import "firebase/firestore";
 
 var firebaseConfig = {
