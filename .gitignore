@@ -19,3 +19,5 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+node_modules
+.expo
