@@ -15,15 +15,16 @@ import "firebase/auth";
 import "firebase/firestore";
 
 var firebaseConfig = {
-  apiKey: "API_KEY",
-  authDomain: "PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://PROJECT_ID.firebaseio.com",
-  projectId: "PROJECT_ID",
-  storageBucket: "PROJECT_ID.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID",
+  apiKey: "AIzaSyDYJzQYi6fiAqKdjmdkie8ld7ZUMCi8pTA",
+  authDomain: "bubble-net-4fbb4.firebaseapp.com",
+  databaseURL: "https://bubble-net-4fbb4-default-rtdb.firebaseio.com",
+  projectId: "bubble-net-4fbb4",
+  storageBucket: "bubble-net-4fbb4.appspot.com",
+  messagingSenderId: "748132683004",
+  appId: "1:748132683004:ios:2e2bbac84d694c5bdb5b79",
   measurementId: "G-MEASUREMENT_ID",
 };
+
 // //Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -34,14 +35,10 @@ if (!firebase.apps.length) {
 }
 
 class Home extends React.Component {
-  state = {
-    email: "",
-    password: ""
-  }
     render() {
 
       return (
-      <TouchableOpacity style={styles.container} /*onPress={() => {this.props.navigation.navigate('Login')}}*/>
+      <TouchableOpacity style={styles.container} onPress={() => {this.props.navigation.navigate('LogIn')}}>
           <Image style={styles.logo} 
             source={require('../assets/logo.png')}/>
       </TouchableOpacity>
@@ -54,7 +51,7 @@ export default withNavigation(Home);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#FFF5E0',
     alignItems: 'center',
     marginTop: '0%'
   },
