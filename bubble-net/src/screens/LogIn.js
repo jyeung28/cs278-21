@@ -43,9 +43,38 @@ class Home extends React.Component {
 
       return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.container} onPress={() => {this.props.navigation.navigate('LogIn')}}>
-            <Image style={styles.logo} 
-              source={require('../assets/logo.png')}/>
+        <Image style={styles.logo}
+          source={require('../assets/logo.png')}/>
+
+        <View style={styles.inputView} >
+          <TextInput
+            style={styles.inputText}
+            placeholder="Email..."
+            placeholderTextColor="#767676"
+            onChangeText={text => this.setState({ email: text })} />
+        </View>
+
+        <View style={styles.inputView} >
+          <TextInput
+            secureTextEntry
+            style={styles.inputText}
+            placeholder="Password..."
+            placeholderTextColor="#767676"
+            secureTextEntry={true}
+            onChangeText={text => this.setState({ password: text })} 
+            />
+        </View>
+
+        <TouchableOpacity>
+          <Text style={styles.forgot}>Forgot Password?</Text>
+        </TouchableOpacity>
+        
+
+        <TouchableOpacity style={styles.loginBtn} onPress={() => {signInUser(this.state.email, this.state.password, this.props)}}>
+          <Text style={styles.loginText}>LOGIN</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {this.props.navigation.navigate('SignUp')}}>
+          <Text style={styles.createAccount}>Don't have an account? Sign up!</Text>
         </TouchableOpacity>
 
       </View>
@@ -63,82 +92,52 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: '0%'
   },
-  welcomeMessage: {
-    fontFamily: "gotham_rounded_medium",
-    fontSize: 16,
-    color: "#3C3C4385",
-    alignItems: 'center',
-    fontWeight: "bold",
-    justifyContent: 'center',
-    textAlign: 'center',
-    marginBottom: 30,
-    width: "80%"
-  },
   logo: {
-    width: 220,
-    height: 220,
-    marginBottom: 20,
-    marginTop: '50%'
+    width: 200,
+    height: 200,
+    marginBottom: 30,
+    marginTop: '40%'
   },
   inputView: {
     width: "80%",
-    backgroundColor: "#EDEDED",
-    borderColor: "#4BBFC370",
+    backgroundColor: "#FED69A",
+    borderColor: "#FED69A",
     borderRadius: 5,
     borderBottomWidth: 1,
     borderTopWidth: 1,
     borderLeftWidth: 1,
     borderRightWidth: 1, 
-    shadowColor: "#18A3A7",
-    shadowRadius: 0, 
-    shadowOpacity: 10,
-    shadowOffset: {
-      width: 0,
-      height: 1.5
-    },
     height: 55,
     marginBottom: 20,
     justifyContent: "center",
     padding: 20
 
   },
-  inputText: {
-    fontFamily: "gotham_rounded_book",
-    height: 60,
-    color: "#3C3C43"
-  },
   forgot: {
     fontFamily: "gotham_rounded_book",
-    color: "#18A3A7",
+    color: "#1c2e4a",
     fontSize: 14,
     position: "relative",
     paddingLeft: 210
   },
   createAccount: {
     fontFamily: "gotham_rounded_book",
-    color: "#18A3A7",
+    color: "#1c2e4a",
     fontSize: 14,
   },
   loginBtn: {
     width: "80%",
-    backgroundColor: "#4BBFC3",
+    backgroundColor: "#88E5B3",
     borderRadius: 5,
     height: 40,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 40,
     marginBottom: 10,
-    shadowColor: "#18A3A7",
-    shadowRadius: 0, 
-    shadowOpacity: 10,
-    shadowOffset: {
-      width: 0,
-      height: 1.5
-    },
   },
   loginText: {
     fontFamily: "gotham_rounded_medium",
-    color: "white",
+    color: "#1c2e4a",
     fontWeight: "bold"
   }
 });
