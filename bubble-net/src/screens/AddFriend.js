@@ -2,6 +2,8 @@ import React from "react";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import firebase from "firebase/app";
+import { useNavigation } from '@react-navigation/native';
+import { useAlert } from "react-alert";
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
 // import * as firebase from "firebase/app"
 
@@ -14,33 +16,33 @@ import "firebase/firestore";
 import { getAuth } from "firebase/auth";
 const md5 = require('md5');
 
-const signUpUser = async (phone, password1, password2, props) => {
-  if (password1 == password2) {
-    firebase.auth().createUserWithEmailAndPassword(phone, password1)
-      .then((userCredential) => {
-        // Signed in 
-        var user = userCredential.user;
-        const reference = firebase.database().ref(`Users`);
-        reference.child(user.uid).child(`ID`).set(md5(phone));
-        reference.child(user.uid).child(`friends`).set({});
-        console.log("Signed up " + user);
-        props.navigation.navigate('BubbleMap');
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
+function addFriend(phone, name, props,state) {
+
+  const userId = firebase.auth().currentUser.uid;
+  const baseReference = firebase.database().ref(`Users`).child(userId).child(`friends`);
+  baseReference.get().then((snapshot) => {
+    if(snapshot.exists()){
+      state.alreadyAdded = true;
+      console.log(snapshot.val())
+    } 
+    if(true){ //FOR DEBUGGING
+      baseReference.child(md5(phone)).set({
+        name: name,
+        phone: phone,
+        active: false
       });
-  }
+      props.navigation.navigate('BubbleMap');
+    }
+  });
 }
 
-class SignUp extends React.Component {
+class AddFriend extends React.Component {
   state = {
     phone: "",
-    password1: "", 
-    password2: ""
+    name: "",
+    alreadyAdded: false
   }
+
 
   render() {
 
@@ -49,41 +51,30 @@ class SignUp extends React.Component {
         <Image style={styles.logo}
           source={require('../assets/logo.png')}/>
 
-        <Text style={styles.welcomeMessage}>What is your phone number?</Text>
+        <Text style={styles.welcomeMessage}>Add Friend?</Text>
   
         <View style={styles.inputView} >
           <TextInput
             style={styles.inputText}
-            placeholder="Phone number..."
+            placeholder="Friend Email Address"
             placeholderTextColor="#767676"
             onChangeText={text => this.setState({ phone: text })} />
         </View>
 
-        <Text style={styles.welcomeMessage}>Create your password below.</Text>
         <View style={styles.inputView} >
           <TextInput
             style={styles.inputText}
-            placeholder="Password..."
+            placeholder="Friend Name"
             placeholderTextColor="#767676"
-            secureTextEntry={true}
-            onChangeText={text => this.setState({ password1: text })} />
+            onChangeText={text => this.setState({ name: text })} />
         </View>
 
-        <View style={styles.inputView} >
-          <TextInput
-            style={styles.inputText}
-            placeholder="Confirm password..."
-            placeholderTextColor="#767676"
-            secureTextEntry={true}
-            onChangeText={text => this.setState({ password2: text })} />
-        </View>
-
-        <TouchableOpacity style={styles.nextBtn} onPress={() => {signUpUser(this.state.phone, this.state.password1, this.state.password2, this.props)}}>
-          <Text style={styles.btnText}>NEXT</Text>
+        <TouchableOpacity style={styles.nextBtn} onPress={() => {addFriend(this.state.phone, this.state.name, this.props,this.state)}}>
+          <Text style={styles.btnText}>{!this.state.alreadyAdded ? "Add Friend" : "Already Added!"}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => {this.props.navigation.navigate('LogIn')}}>
-          <Text style={styles.link}>Back to Log In</Text>
+        <TouchableOpacity onPress={() => {this.props.navigation.navigate('BubbleMap')}}>
+          <Text style={styles.link}>Back to Home</Text>
         </TouchableOpacity>
 
       </View>
@@ -91,7 +82,7 @@ class SignUp extends React.Component {
   }
 }
 
-export default withNavigation(SignUp);
+export default withNavigation(AddFriend);
 
 
 const styles = StyleSheet.create({

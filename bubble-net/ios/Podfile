@@ -1,6 +1,7 @@
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
 
 platform :ios, '11.0'
 
@@ -23,7 +24,8 @@ target 'bubblenet' do
   pod 'FirebaseUI'
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
-
+  #pod 'RNFBApp', path: '../node_modules/@react-native-firebase/app/ios/RNFBApp.podspec'
+  pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
   pod 'FBSDKCoreKit', :modular_headers => true
   pod 'FBSDKLoginKit', :modular_headers => true
   pod 'FBSDKShareKit', :modular_headers => true

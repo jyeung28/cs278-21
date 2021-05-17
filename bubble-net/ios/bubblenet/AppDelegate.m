@@ -23,9 +23,6 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 
-#import <Firebase.h>
-@import FirebaseUI
-
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
   SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
@@ -52,6 +49,13 @@ static void InitializeFlipper(UIApplication *application) {
   FUIAuth *authUI = [FUIAuth defaultAuthUI];
   // You need to adopt a FUIAuthDelegate protocol to receive callback
   authUI.delegate = self;
+  
+  
+  NSArray<id<FUIAuthProvider>> *providers = @[
+    [[FUIGoogleAuth alloc] init],
+    [[FUIPhoneAuth alloc] initWithAuthUI:[FUIAuth defaultAuthUI]]
+  ];
+  _authUI.providers = providers;
 #if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
   InitializeFlipper(application);
 #endif
