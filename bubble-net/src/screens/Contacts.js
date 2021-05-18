@@ -4,7 +4,6 @@ import { withNavigation } from 'react-navigation';
 import { SearchBar } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import x from '../assets/x.png'
-
 import firebase from "firebase/app";
 import "firebase/firestore";
 const md5 = require('md5');
@@ -14,6 +13,8 @@ const md5 = require('md5');
 
 // import auth from '@react-native-firebase/auth';
 // import database from '@react-native-firebase/database';
+
+
 
 function Contacts() {
   const navigation = useNavigation();
@@ -37,22 +38,45 @@ function Contacts() {
         friendMap[friendName] = {name: friendName, phone: friendPhone, status: friendStatus}
       });
     });
+
     setMap(friendMap);
     updateContacts(true);
   }
 
+  function makeButton(data){
+    return(
+        <TouchableOpacity style={styles.button}> 
+          <Text style={styles.buttonText}>{data}</Text> 
+        </TouchableOpacity>
+      );
+  }
+
   function makeAvatarGrid() {
-    console.log("in make grid");
+   console.log("in make grid");
+
+
     if (contactsMap != undefined) {
-      Object.keys(contactsMap).map((key) => {
-        return (
+      // var buttons = [];
+      // for(var contact in contactsMap){
+      //   console.log(contact)
+      //   buttons.push(
+      // }
+      // console.log(buttons)
+
+      const result = Object.keys(contactsMap).map((key) => {
+        //console.log(key)
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>{key}</Text>
           </TouchableOpacity>
-        )
       })
-    }
-  }  
+      console.log(result)
+      return result
+  }}  
+
+  // var grid = makeAvatarGrid()
+  // console.log(grid)
+  // console.log(contactsMap)
+  // console.log(Object.keys(contactsMap).map(makeButton)
 
   return (
     <View style={styles.container}>
@@ -71,7 +95,7 @@ function Contacts() {
           <Text style={styles.buttonText}>Retrieve contacts</Text>
       </TouchableOpacity>  
 
-      <View style={styles.avatarGrid}>{makeAvatarGrid()}</View> 
+      <View style={styles.avatarGrid}>{Object.keys(contactsMap).map(makeButton,this)}</View> 
       
     </View>
   ); 
