@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { SearchBar } from 'react-native-elements';
@@ -7,6 +7,8 @@ import x from '../assets/x.png'
 
 import firebase from "firebase/app";
 import "firebase/firestore";
+const md5 = require('md5');
+
 // import { auth } from "firebase/auth";
 // import { database } from "firebase/database";
 
@@ -15,6 +17,54 @@ import "firebase/firestore";
 
 function Menu() {
   const navigation = useNavigation();
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
+  function logOut() {
+    const userKey = firebase.auth().currentUser.uid;
+    const reference = firebase.database().ref(`Users`);
+    const userReference = firebase.database().ref(`Users`).child(userKey);
+    
+    var userId = null;
+    userReference.on('value', function(snap) {
+      userId = snap.child('ID').val();
+      var userName = snap.child('phone').val();
+    });
+    console.log("Presence detected for " + userKey + " id: " + userId);
+   
+    var updates = {};
+    reference.on('value', function(snap) {
+      snap.forEach(function(childNodes) {
+        const friendKey = childNodes.key
+        const friendsList = childNodes.val().friends
+        const friendListRef = firebase.database().ref('Users').child(childNodes.key).child('friends')
+        // console.log(friendListRef)
+
+        friendListRef.on('value', function(snap2) {
+          snap2.forEach(function(friendNode) {
+            var friendHash = md5(friendNode.val().phone)
+            
+            if (friendHash == userId) {
+              var currStatus = friendNode.val().active;
+              var updatedData = {
+                active: false,
+                id: friendHash,
+                name: friendNode.val().name,
+                phone: friendNode.val().phone
+              }
+
+              updates['/' + friendKey + '/friends/' + friendHash] = updatedData;
+              // friendNode.val().active = true 
+              // console.log("friend list updated for " + friendHash)
+              // console.log("active status: " + friendNode.val().active)
+            }
+          });
+        });
+      });
+    });
+    reference.update(updates);
+    navigation.navigate('LogIn')
+  }
 
   return (
   <View style={styles.container}>
@@ -31,7 +81,7 @@ function Menu() {
         <Text style={styles.buttonText}>Contacts</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('LogIn')}}>
+      <TouchableOpacity style={styles.button} onPress={() => logOut()}>
         <Text style={styles.buttonText}>Log out</Text>
       </TouchableOpacity>
 

@@ -29,7 +29,8 @@ function addFriend(phone, name, props,state) {
       baseReference.child(md5(phone)).set({
         name: name,
         phone: phone,
-        active: false
+        active: false,
+        id: md5(phone)
       });
       props.navigation.navigate('BubbleMap');
     }

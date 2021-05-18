@@ -19,7 +19,7 @@ var signInUser = async (phone, password, props) => {
     .then((userCredential) => {
       // Signed in
       var user = userCredential.user;
-      console.log("Logged in " + user);
+      console.log("Logged in " + user.uid);
       props.navigation.navigate('BubbleMap');
     })
     .catch((error) => {

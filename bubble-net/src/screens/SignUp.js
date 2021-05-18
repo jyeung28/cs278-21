@@ -22,6 +22,7 @@ const signUpUser = async (phone, password1, password2, props) => {
         var user = userCredential.user;
         const reference = firebase.database().ref(`Users`);
         reference.child(user.uid).child(`ID`).set(md5(phone));
+        reference.child(user.uid).child('phone').set(phone);
         reference.child(user.uid).child(`friends`).set({});
         console.log("Signed up " + user);
         props.navigation.navigate('BubbleMap');
