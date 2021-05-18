@@ -14,16 +14,17 @@ import "firebase/firestore";
 import { getAuth } from "firebase/auth";
 const md5 = require('md5');
 
-const signUpUser = async (phone, password1, password2, props) => {
+const signUpUser = async (phone, email, password1, password2, props) => {
   if (password1 == password2) {
-    firebase.auth().createUserWithEmailAndPassword(phone, password1)
+    firebase.auth().createUserWithEmailAndPassword(email, password1)
       .then((userCredential) => {
         // Signed in 
         var user = userCredential.user;
         const reference = firebase.database().ref(`Users`);
-        reference.child(user.uid).child(`ID`).set(md5(phone));
+        reference.child(user.uid).child(`ID`).set(md5(email));
         reference.child(user.uid).child('phone').set(phone);
         reference.child(user.uid).child(`friends`).set({});
+        reference.child(user.uid).child('email').set(email)
         console.log("Signed up " + user);
         props.navigation.navigate('BubbleMap');
       })
@@ -39,6 +40,7 @@ const signUpUser = async (phone, password1, password2, props) => {
 class SignUp extends React.Component {
   state = {
     phone: "",
+    email: "",
     password1: "", 
     password2: ""
   }
@@ -49,6 +51,16 @@ class SignUp extends React.Component {
       <View style={styles.container}>        
         <Image style={styles.logo}
           source={require('../assets/logo.png')}/>
+
+        <Text style={styles.welcomeMessage}>What is your email?</Text>
+  
+        <View style={styles.inputView} >
+          <TextInput
+            style={styles.inputText}
+            placeholder="Email..."
+            placeholderTextColor="#767676"
+            onChangeText={text => this.setState({ email: text })} />
+        </View>
 
         <Text style={styles.welcomeMessage}>What is your phone number?</Text>
   
@@ -79,7 +91,7 @@ class SignUp extends React.Component {
             onChangeText={text => this.setState({ password2: text })} />
         </View>
 
-        <TouchableOpacity style={styles.nextBtn} onPress={() => {signUpUser(this.state.phone, this.state.password1, this.state.password2, this.props)}}>
+        <TouchableOpacity style={styles.nextBtn} onPress={() => {signUpUser(this.state.phone, this.state.email, this.state.password1, this.state.password2, this.props)}}>
           <Text style={styles.btnText}>NEXT</Text>
         </TouchableOpacity>
 
@@ -116,7 +128,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginBottom: 20,
-    marginTop: '40%'
+    marginTop: '30%'
   },
   inputView: {
     width: "80%",

@@ -45,33 +45,13 @@ function Contacts() {
 
   function makeButton(data){
     return(
-        <TouchableOpacity style={styles.button}> 
-          <Text style={styles.buttonText}>{data}</Text> 
+        <TouchableOpacity style={styles.friendContainer}> 
+          <Image style={styles.friendContainerActive} 
+              source={require('../assets/user.png')}/>
+          <Text style={styles.name}>{data}{"\n"}{contactsMap[data].phone}</Text>
         </TouchableOpacity>
       );
   }
-
-  function makeAvatarGrid() {
-   console.log("in make grid");
-
-
-    if (contactsMap != undefined) {
-      // var buttons = [];
-      // for(var contact in contactsMap){
-      //   console.log(contact)
-      //   buttons.push(
-      // }
-      // console.log(buttons)
-
-      const result = Object.keys(contactsMap).map((key) => {
-        //console.log(key)
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>{key}</Text>
-          </TouchableOpacity>
-      })
-      console.log(result)
-      return result
-  }}  
 
   // var grid = makeAvatarGrid()
   // console.log(grid)
@@ -120,27 +100,8 @@ const styles = StyleSheet.create({
     flex: 0,
     justifyContent: 'center',
     flexWrap: 'wrap',
-    backgroundColor: "white"
-  },
-  avatarContainerInactive: {
-    padding:0,
-    margin:0,
-    borderRadius: 400,
-    width: 320,
-    height: 360,
-    marginBottom: '0%',
-    marginTop: '0%',
-    backgroundColor: '#768185',
-  },
-  avatarContainerActive: {
-    padding:0,
-    margin:0,
-    borderRadius: 400, 
-    width: 320,
-    height: 360,
-    marginBottom: '0%',
-    marginTop: '0%',
-    backgroundColor: '#61dafb',
+    backgroundColor: "white",
+    width: '90%'
   },
   menuContainer: {
     width: 35,
@@ -200,5 +161,34 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     position: "relative",
     fontSize: 20
+  },
+  avatarContainer: {
+    alignItems: "center",
+    position: "relative",
+    marginBottom: 20
+  },
+  avatarGrid: {
+    flex: 0,
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+  },
+  friendContainer: {
+    alignItems: "center",
+    position: "relative",
+    flexWrap: 'wrap',
+  },
+  friendContainerActive: {
+    borderRadius: 400, 
+    margin: 20,
+    width: 96,
+    height: 108,
+    backgroundColor: '#f8bb78',
+    position: "relative"
+  },
+  name: {
+    fontFamily: "gotham_rounded_medium",
+    color: "#1c2e4a",
+    fontWeight: "bold",
   },
 });

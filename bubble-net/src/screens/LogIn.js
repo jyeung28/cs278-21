@@ -14,11 +14,12 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-var signInUser = async (phone, password, props) => {
-  firebase.auth().signInWithEmailAndPassword(phone, password)
+var signInUser = async (email, password, props) => {
+  firebase.auth().signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
       // Signed in
       var user = userCredential.user;
+      
       console.log("Logged in " + user.uid);
       props.navigation.navigate('BubbleMap');
     })
@@ -32,7 +33,7 @@ var signInUser = async (phone, password, props) => {
 
 class LogIn extends React.Component {
   state = {
-    phone: "",
+    email: "",
     password: ""
   }
     render() {
@@ -45,9 +46,9 @@ class LogIn extends React.Component {
         <View style={styles.inputView} >
           <TextInput
             style={styles.inputText}
-            placeholder="Phone..."
+            placeholder="Email..."
             placeholderTextColor="#767676"
-            onChangeText={text => this.setState({ phone: text })} />
+            onChangeText={text => this.setState({ email: text })} />
         </View>
 
         <View style={styles.inputView} >
@@ -66,7 +67,7 @@ class LogIn extends React.Component {
         </TouchableOpacity>
         
 
-        <TouchableOpacity style={styles.loginBtn} onPress={() => {signInUser(this.state.phone, this.state.password, this.props)}}>
+        <TouchableOpacity style={styles.loginBtn} onPress={() => {signInUser(this.state.email, this.state.password, this.props)}}>
           <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {this.props.navigation.navigate('SignUp')}}>
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginBottom: 30,
-    marginTop: '40%'
+    marginTop: '30%'
   },
   inputView: {
     width: "80%",

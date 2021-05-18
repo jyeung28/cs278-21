@@ -17,8 +17,6 @@ const md5 = require('md5');
 
 function Menu() {
   const navigation = useNavigation();
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
 
   function logOut() {
     const userKey = firebase.auth().currentUser.uid;
@@ -28,7 +26,6 @@ function Menu() {
     var userId = null;
     userReference.on('value', function(snap) {
       userId = snap.child('ID').val();
-      var userName = snap.child('phone').val();
     });
     console.log("Presence detected for " + userKey + " id: " + userId);
    
@@ -42,10 +39,9 @@ function Menu() {
 
         friendListRef.on('value', function(snap2) {
           snap2.forEach(function(friendNode) {
-            var friendHash = md5(friendNode.val().phone)
+            var friendHash = friendNode.val().id;
             
             if (friendHash == userId) {
-              var currStatus = friendNode.val().active;
               var updatedData = {
                 active: false,
                 id: friendHash,

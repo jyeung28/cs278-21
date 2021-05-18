@@ -16,7 +16,7 @@ import "firebase/firestore";
 import { getAuth } from "firebase/auth";
 const md5 = require('md5');
 
-function addFriend(phone, name, props,state) {
+function addFriend(email, phone, name, props,state) {
 
   const userId = firebase.auth().currentUser.uid;
   const baseReference = firebase.database().ref(`Users`).child(userId).child(`friends`);
@@ -26,11 +26,13 @@ function addFriend(phone, name, props,state) {
       console.log(snapshot.val())
     } 
     if(true){ //FOR DEBUGGING
-      baseReference.child(md5(phone)).set({
+      const friendID = 
+      baseReference.child(md5(email)).set({
         name: name,
-        phone: phone,
+        email: email,
         active: false,
-        id: md5(phone)
+        id: md5(email),
+        phone: phone
       });
       props.navigation.navigate('BubbleMap');
     }
@@ -39,8 +41,9 @@ function addFriend(phone, name, props,state) {
 
 class AddFriend extends React.Component {
   state = {
-    phone: "",
+    email: "",
     name: "",
+    phone: "",
     alreadyAdded: false
   }
 
@@ -59,6 +62,14 @@ class AddFriend extends React.Component {
             style={styles.inputText}
             placeholder="Friend Email Address"
             placeholderTextColor="#767676"
+            onChangeText={text => this.setState({ email: text })} />
+        </View>
+
+        <View style={styles.inputView} >
+          <TextInput
+            style={styles.inputText}
+            placeholder="Friend Phone Number"
+            placeholderTextColor="#767676"
             onChangeText={text => this.setState({ phone: text })} />
         </View>
 
@@ -70,7 +81,7 @@ class AddFriend extends React.Component {
             onChangeText={text => this.setState({ name: text })} />
         </View>
 
-        <TouchableOpacity style={styles.nextBtn} onPress={() => {addFriend(this.state.phone, this.state.name, this.props,this.state)}}>
+        <TouchableOpacity style={styles.nextBtn} onPress={() => {addFriend(this.state.email, this.state.phone, this.state.name, this.props,this.state)}}>
           <Text style={styles.btnText}>{!this.state.alreadyAdded ? "Add Friend" : "Already Added!"}</Text>
         </TouchableOpacity>
 
