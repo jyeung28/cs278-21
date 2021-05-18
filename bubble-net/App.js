@@ -13,6 +13,7 @@ import SignUp from './src/screens/SignUp.js'
 import BubbleMap from './src/screens/BubbleMap.js'
 import Menu from './src/screens/Menu.js'
 import AddFriend from './src/screens/AddFriend.js'
+import Contacts from './src/screens/Contacts.js'
 
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from "firebase/app";
@@ -47,6 +48,7 @@ export default function App() {
         <Stack.Screen name="BubbleMap" component={BubbleMap} options={{ headerShown: false }} />
         <Stack.Screen name="Menu" component={Menu} options={{ headerShown: false }} />
         <Stack.Screen name="AddFriend" component={AddFriend} options={{ headerShown: false }} />
+        <Stack.Screen name="Contacts" component={Contacts} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
 

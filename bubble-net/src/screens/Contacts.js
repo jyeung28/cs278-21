@@ -15,81 +15,69 @@ const md5 = require('md5');
 // import auth from '@react-native-firebase/auth';
 // import database from '@react-native-firebase/database';
 
-function Menu() {
+function Contacts() {
   const navigation = useNavigation();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [contactsMap, setMap] = useState({});
+  const [contactsFound, updateContacts] = useState(false);
 
-  function logOut() {
+  function retrieveContacts() {
+    var friendMap = {};
     const userKey = firebase.auth().currentUser.uid;
-    const reference = firebase.database().ref(`Users`);
-    const userReference = firebase.database().ref(`Users`).child(userKey);
-    
-    var userId = null;
-    userReference.on('value', function(snap) {
-      userId = snap.child('ID').val();
-      var userName = snap.child('phone').val();
-    });
-    console.log("Presence detected for " + userKey + " id: " + userId);
-   
-    var updates = {};
-    reference.on('value', function(snap) {
+    const friendListRef = firebase.database().ref('Users').child(userKey).child('friends')
+
+
+    friendListRef.once('value', function(snap) {
       snap.forEach(function(childNodes) {
         const friendKey = childNodes.key
-        const friendsList = childNodes.val().friends
-        const friendListRef = firebase.database().ref('Users').child(childNodes.key).child('friends')
-        // console.log(friendListRef)
-
-        friendListRef.on('value', function(snap2) {
-          snap2.forEach(function(friendNode) {
-            var friendHash = md5(friendNode.val().phone)
-            
-            if (friendHash == userId) {
-              var currStatus = friendNode.val().active;
-              var updatedData = {
-                active: false,
-                id: friendHash,
-                name: friendNode.val().name,
-                phone: friendNode.val().phone
-              }
-
-              updates['/' + friendKey + '/friends/' + friendHash] = updatedData;
-              // friendNode.val().active = true 
-              // console.log("friend list updated for " + friendHash)
-              // console.log("active status: " + friendNode.val().active)
-            }
-          });
-        });
+        var friendName = childNodes.val().name
+        var friendPhone = childNodes.val().phone
+        var friendStatus = childNodes.val().active
+        friendMap[friendName] = {name: friendName, phone: friendPhone, status: friendStatus}
       });
     });
-    reference.update(updates);
-    navigation.navigate('LogIn')
+    setMap(friendMap);
+    updateContacts(true);
   }
 
+  function makeAvatarGrid() {
+    console.log("in make grid");
+    if (contactsMap != undefined) {
+      Object.keys(contactsMap).map((key) => {
+        return (
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>{key}</Text>
+          </TouchableOpacity>
+        )
+      })
+    }
+  }  
+
   return (
-  <View style={styles.container}>
+    <View style={styles.container}>
+ 
       <View style={styles.header}>
         <View style={styles.statusButton}>
-          <Text style={styles.statusText}>Menu</Text>
+          <Text style={styles.statusText}>Contacts</Text>
         </View>
-        <TouchableOpacity style={styles.menuContainer} onPress={() => {navigation.navigate('BubbleMap')}}>
+
+        <TouchableOpacity style={styles.menuContainer} onPress={() => {navigation.navigate('Menu')}}>
           <Image style = {styles.menu} source={x}/>
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Contacts')}}>
-        <Text style={styles.buttonText}>Contacts</Text>
-      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => retrieveContacts()}>
+          <Text style={styles.buttonText}>Retrieve contacts</Text>
+      </TouchableOpacity>  
 
-      <TouchableOpacity style={styles.button} onPress={() => logOut()}>
-        <Text style={styles.buttonText}>Log out</Text>
-      </TouchableOpacity>
-
+      <View style={styles.avatarGrid}>{makeAvatarGrid()}</View> 
+      
     </View>
   ); 
 };
 
-export default withNavigation(Menu);
+export default withNavigation(Contacts);
 
 const styles = StyleSheet.create({
   container: {
@@ -103,6 +91,32 @@ const styles = StyleSheet.create({
   	height: 300,
   	marginBottom: 20,
     marginTop: '60%'
+  },
+  avatarGrid: {
+    flex: 0,
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    backgroundColor: "white"
+  },
+  avatarContainerInactive: {
+    padding:0,
+    margin:0,
+    borderRadius: 400,
+    width: 320,
+    height: 360,
+    marginBottom: '0%',
+    marginTop: '0%',
+    backgroundColor: '#768185',
+  },
+  avatarContainerActive: {
+    padding:0,
+    margin:0,
+    borderRadius: 400, 
+    width: 320,
+    height: 360,
+    marginBottom: '0%',
+    marginTop: '0%',
+    backgroundColor: '#61dafb',
   },
   menuContainer: {
     width: 35,
